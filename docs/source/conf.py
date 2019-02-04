@@ -4,12 +4,18 @@
 import os
 import sys
 
+import django
+from django.conf import settings
+
 sys.path.insert(0, os.path.abspath('../..'))
 sys.path.insert(0, os.path.abspath('./'))
 
-from run_test import setup_django_environment
-
-setup_django_environment()
+settings.configure(
+    INSTALLED_APPS=(
+        "pg_timepart",
+    ),
+)
+django.setup()
 
 extensions = [
     'sphinx.ext.autodoc',

@@ -1,7 +1,7 @@
 from django.apps import apps
 from django.db import models, transaction
 
-from pg_timeparti.signals import post_attach_partition, post_create_partition, post_detach_partition
+from pg_timepart.signals import post_attach_partition, post_create_partition, post_detach_partition
 from .constants import (
     SQL_APPEND_TABLESPACE,
     SQL_ATTACH_PARTITION,
