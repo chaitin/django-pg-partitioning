@@ -68,6 +68,7 @@ setup(
     description="A Django extension that implements PostgreSQL tables for partitioning and management based on dates.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
+    url="https://github.com/chaitin/django-pg-timepart",
     packages=["pg_timepart", "pg_timepart.migrations", "pg_timepart.patch"],
     include_package_data=True,
     install_requires=dependencies,
@@ -78,9 +79,9 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Framework :: Django :: 2.0",
+        "Framework :: Django :: 2.1",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-        "Natural Language :: Chinese (Simplified)",
         "Topic :: Software Development :: Libraries :: Python Modules"
     ],
 )
