@@ -1,0 +1,14 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:11.1-alpine
+    container_name: postgres
+    restart: always
+    volumes:
+      - ./postgres_init.sh:/docker-entrypoint-initdb.d/postgres_init.sh
+    environment:
+      - POSTGRES_DB=test
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+    ports:
+      - "127.0.0.1:5432:5432"

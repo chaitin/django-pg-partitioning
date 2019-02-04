@@ -1,0 +1,27 @@
+language: python
+cache: pip
+sudo: required
+matrix:
+  fast_finish: true
+  include:
+    - { python: "3.6", env: DJANGO=2.0 }
+    - { python: "3.6", env: DJANGO=2.1 }
+    - { python: "3.7", env: DJANGO=2.0 }
+    - { python: "3.7", env: DJANGO=2.1 }
+    - { python: "3.7", env: TOXENV=lint }
+    - { python: "3.7", env: TOXENV=docs }
+  allow_failures:
+    - env: TOXENV=docs
+services:
+  - docker
+install:
+  - pip install '.[dev]' tox-travis
+before_script:
+  - docker-compose -f dev/docker-compose.yml up -d
+script:
+  - tox
+after_success:
+    - pip install codecov
+    - codecov -e TOXENV,DJANGO
+notifications:
+    email: false
