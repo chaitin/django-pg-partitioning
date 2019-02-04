@@ -23,6 +23,13 @@ periodically creating new partitions and archiving old partitions.
 Documentation
   https://django-pg-timepart.readthedocs.io/en/latest/
 
+TODO
+----
+* Improve documentation and testing.
+* Migration continuous integration platform.
+
+maybe more...
+
 Contributing
 ------------
 
