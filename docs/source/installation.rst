@@ -6,7 +6,7 @@ GitHub
 
 .. code-block:: bash
 
-   $ pip install git+https://github.com/chaitin/django-partitioning.git@master
+   $ pip install git+https://github.com/chaitin/django-pg-timepart.git@master
 
 PyPI
 ----
