@@ -1,7 +1,7 @@
 *.egg-info
 dist/
 build/
-docs/build
+docs/_build
 docs/source/.doctrees/
 __pycache__/
 .cache
