@@ -1,13 +1,6 @@
 Installation
 ============
 
-GitHub
-------
-
-.. code-block:: bash
-
-   $ pip install git+https://github.com/chaitin/django-pg-timepart.git@master
-
 PyPI
 ----
 
@@ -15,10 +8,18 @@ PyPI
 
    $ pip install django-pg-timepart
 
-Django
-------
+Or you can install from GitHub
 
-settings.py (Important - Please note 'django-partitioning' is loaded earlier than the app that depends on it)::
+.. code-block:: bash
+
+   $ pip install git+https://github.com/chaitin/django-pg-timepart.git@master
+
+Integrate with Django
+---------------------
+
+Add ``pg_timepart`` to ``INSTALLED_APPS`` in settings.py.
+
+Important - Please note 'pg_timepart' should be loaded earlier than other apps that depend on it::
 
     INSTALLED_APPS = [
         'pg_timepart',
@@ -27,8 +28,8 @@ settings.py (Important - Please note 'django-partitioning' is loaded earlier tha
 
     PARTITION_TIMEZONE = "Asia/Shanghai"
 
-You can specify the time zone referenced by the time range partitioned table via `PARTITION_TIMEZONE`,
-and if it is not specified, get the value of `TIME_ZONE`.
+You can specify the time zone referenced by the time range partitioned table via ``PARTITION_TIMEZONE``,
+and if it is not specified, ``TIME_ZONE`` value is used.
 
 Post-Installation
 -----------------
@@ -36,3 +37,4 @@ Post-Installation
 In your Django root execute the command below to create 'pg_timepart' database tables::
 
     ./manage.py migrate pg_timepart
+
