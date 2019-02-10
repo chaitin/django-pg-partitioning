@@ -81,4 +81,4 @@ if __name__ == "__main__":
         print("\nRunning Code Coverage...\n")
         cov.stop()
         cov.report()
-        cov.html_report(directory=".coverage")
+        cov.xml_report()
