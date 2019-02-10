@@ -10,6 +10,12 @@ django-pg-timepart
    :target: https://django-pg-timepart.readthedocs.io/en/latest/
 .. image:: https://img.shields.io/pypi/v/django-pg-timepart.svg?style=flat-square
    :target: https://pypi.org/project/django-pg-timepart/
+.. image:: https://api.travis-ci.org/monouno/django-pg-timepart.svg?branch=master
+   :target: https://travis-ci.org/monouno/django-pg-timepart
+.. image:: https://api.codacy.com/project/badge/Grade/c872699c1b254e90b540b053343d1e81
+   :target: https://www.codacy.com/app/xingji2163/django-pg-timepart?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=chaitin/django-pg-timepart&amp;utm_campaign=Badge_Grade
+.. image:: https://codecov.io/gh/monouno/django-pg-timepart/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/monouno/django-pg-timepart
 
 一个实现 PostgreSQL 表基于日期进行分区和管理的 Django 扩展。
 它适用于像记录日志、消息或文章等具有时间列的巨型表进行分区管理，定期创建新的分区并归档旧的分区。
