@@ -4,11 +4,11 @@ from unittest.mock import patch
 from django.test import TestCase
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-
-from .models import ExampleModel1, ExampleModel2
 from pg_timepart.constants import PeriodType
 from pg_timepart.models import PartitionConfig
 from pg_timepart.utils import double_quote, execute_sql, single_quote
+
+from .models import ExampleModel1, ExampleModel2
 
 
 def t(year=2018, month=8, day=25, hour=7, minute=15, second=15, millisecond=0):

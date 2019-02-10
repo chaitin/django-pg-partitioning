@@ -7,7 +7,6 @@ from importlib import import_module
 from django.apps.config import MODELS_MODULE_NAME
 from django.db.backends.postgresql.schema import DatabaseSchemaEditor
 
-
 logger = logging.getLogger(__name__)
 
 
