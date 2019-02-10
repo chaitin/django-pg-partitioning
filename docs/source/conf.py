@@ -44,7 +44,6 @@ pygments_style = 'sphinx'
 html_theme = 'alabaster'
 
 html_theme_options = {
-    'logo': 'img/logo.gif',
     'github_user': 'chaitin',
     'github_repo': 'django-pg-timepart',
     'github_type': 'star',

@@ -4,3 +4,4 @@ sphinxcontrib-napoleon==0.7
 Pygments==2.3.1
 psycopg2-binary==2.7.6.1
 Django>=2.0,<2.2
+python-dateutil~=2.7
