@@ -1,6 +1,6 @@
 import datetime
 from collections import Iterable
-from typing import Optional
+from typing import Optional, Type, Union
 
 import pytz
 from dateutil.relativedelta import MO, relativedelta
@@ -8,24 +8,39 @@ from django.conf import settings
 from django.db import IntegrityError, models
 from django.db.models import Q
 from django.utils import timezone
+from pg_partitioning.shortcuts import double_quote, execute_sql, generate_set_indexes_tablespace_sql, single_quote
 
-from .constants import DT_FORMAT, PeriodType
+from .constants import (
+    DT_FORMAT,
+    SQL_APPEND_TABLESPACE,
+    SQL_ATTACH_LIST_PARTITION,
+    SQL_CREATE_LIST_PARTITION,
+    SQL_DETACH_PARTITION,
+    SQL_SET_TABLE_TABLESPACE,
+    PartitioningType,
+    PeriodType,
+)
 from .models import PartitionConfig, PartitionLog
 
 
-class TimeRangePartitioning:
-    """Class of partitioned model attribute ``partitioning``. Provide some common methods for managing partitions.
-    """
+class _PartitionManagerBase:
+    type = None
 
-    def __init__(self, model, partition_key, options):
+    def __init__(self, model: Type[models.Model], partition_key: str, options: dict):
         self.model = model
         self.partition_key = partition_key
         self.options = options
 
+
+class TimeRangePartitionManager(_PartitionManagerBase):
+    """Manage time-based partition APIs."""
+
+    type = PartitioningType.Range
+
     @property
     def config(self) -> PartitionConfig:
         """Get the latest PartitionConfig instance of this model.
-        In order to avoid the race condition, we used ``select_for_update`` when querying.
+        In order to avoid the race condition, we used **select_for_update** when querying.
 
         Returns:
           PartitionConfig: The latest PartitionConfig instance of this model.
@@ -161,52 +176,63 @@ class TimeRangePartitioning:
             if log.config == self.config:
                 log.delete()
 
-    def truncate_all_partition(self) -> None:
-        """Clear all data from partitioned table.
+
+def _db_value(value: Union[str, int, bool, None]) -> str:
+    if value is None:
+        return "null"
+    return single_quote(value) if isinstance(value, str) else str(value)
+
+
+class ListPartitionManager(_PartitionManagerBase):
+    """Manage list-based partition APIs."""
+
+    type = PartitioningType.List
+
+    def create_partition(self, partition_name: str, value: Union[str, int, bool, None], tablespace: str = None) -> None:
+        """Create partitions.
+
+        Parameters:
+          partition_name(str): Partition name.
+          value(Union[str, int, bool, None]): Partition key value.
+          tablespace(str): Partition tablespace name.
         """
-        for log in self.config.logs.all():
-            log.truncate()
 
+        sql_sequence = [
+            SQL_CREATE_LIST_PARTITION % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name), "value": _db_value(value)}
+        ]
+        if tablespace:
+            sql_sequence[0] += SQL_APPEND_TABLESPACE % {"tablespace": tablespace}
+            sql_sequence.extend(generate_set_indexes_tablespace_sql(partition_name, tablespace))
+        execute_sql(sql_sequence)
 
-class TimeRangePartitioningSupport:
-    """Use this decorator to declare the database table corresponding to the model to be partitioned by time range.
+    def attach_partition(self, partition_name: str, value: Union[str, int, bool, None], tablespace: str = None) -> None:
+        """Attach partitions.
 
-    Parameters:
-      partition_key(str): Partition field name of DateTimeField.
-      options: Currently supports the following keyword parameters:
+        Parameters:
+          partition_name(str): Partition name.
+          value(Union[str, int, bool, None]): Partition key value.
+          tablespace(str): Partition tablespace name.
+        """
 
-        - default_period(PeriodType): Default partition period.
-        - default_interval(int): Default detach partition interval.
-        - default_attach_tablespace(str): Default tablespace for attached tables.
-        - default_detach_tablespace(str): Default tablespace for attached tables.
+        sql_sequence = list()
+        if tablespace:
+            sql_sequence.append(SQL_SET_TABLE_TABLESPACE % {"name": double_quote(partition_name), "tablespace": tablespace})
+            sql_sequence.extend(generate_set_indexes_tablespace_sql(partition_name, tablespace))
+        sql_sequence.append(
+            SQL_ATTACH_LIST_PARTITION
+            % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name), "value": single_quote(_db_value(value))}
+        )
+        execute_sql(sql_sequence)
 
-    Example:
-      .. code-block:: python
+    def detach_partition(self, partition_name: str, tablespace: str = None) -> None:
+        """Detach partitions.
 
-          from django.db import models
-          from django.utils import timezone
-
-          from pg_timepart.manager import TimeRangePartitioningSupport
-
-
-          @TimeRangePartitioningSupport(partition_key="timestamp")
-          class MyLog(models.Model):
-              name = models.TextField(default="Hello World!")
-              timestamp = models.DateTimeField(default=timezone.now, primary_key=True)
-    """
-
-    def __init__(self, partition_key: str, **options):
-        self.partition_key = partition_key
-        self.options = options
-
-    def __call__(self, model):
-
-        if not issubclass(model, models.Model):
-            raise ValueError("Invalid decorated class.")
-
-        if model._meta.get_field(self.partition_key).get_internal_type() != models.DateTimeField().get_internal_type():
-            raise ValueError("The partition_key must be DateTimeField type.")
-
-        model.partitioning = TimeRangePartitioning(model, self.partition_key, self.options)
-
-        return model
+        Parameters:
+          partition_name(str): Partition name.
+          tablespace(str): Partition tablespace name.
+        """
+        sql_sequence = [SQL_DETACH_PARTITION % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name)}]
+        if tablespace:
+            sql_sequence.append(SQL_SET_TABLE_TABLESPACE % {"name": double_quote(partition_name), "tablespace": tablespace})
+            sql_sequence.extend(generate_set_indexes_tablespace_sql(partition_name, tablespace))
+        execute_sql(sql_sequence)

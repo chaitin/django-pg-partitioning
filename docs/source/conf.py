@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('./'))
 
 settings.configure(
     INSTALLED_APPS=(
-        "pg_timepart",
+        "pg_partitioning",
     ),
 )
 django.setup()
@@ -31,7 +31,7 @@ source_suffix = '.rst'
 
 master_doc = 'index'
 
-project = 'django-pg-timepart'
+project = 'django-pg-partitioning'
 copyright = '2019, Chaitin Tech'
 author = 'Boyce Li'
 
@@ -45,7 +45,7 @@ html_theme = 'alabaster'
 
 html_theme_options = {
     'github_user': 'chaitin',
-    'github_repo': 'django-pg-timepart',
+    'github_repo': 'django-pg-partitioning',
     'github_type': 'star',
     'github_banner': 'true',
     'show_powered_by': 'false',
@@ -62,16 +62,16 @@ html_sidebars = {
     ]
 }
 
-htmlhelp_basename = 'django-pg-timepart-doc'
+htmlhelp_basename = 'django-pg-partitioning-doc'
 
 man_pages = [
-    (master_doc, 'django-pg-timepart', 'django-pg-timepart Documentation',
+    (master_doc, 'django-pg-partitioning', 'django-pg-partitioning Documentation',
      [author], 1)
 ]
 
 texinfo_documents = [
-    (master_doc, 'django-pg-timepart', 'django-pg-timepart Documentation',
-     author, 'django-pg-timepart', 'A Django extension that provides database table partition management.',
+    (master_doc, 'django-pg-partitioning', 'django-pg-partitioning Documentation',
+     author, 'django-pg-partitioning', 'A Django extension that supports PostgreSQL 11 time ranges and list partitioning.',
      'Miscellaneous'),
 ]
 

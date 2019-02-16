@@ -1,14 +1,12 @@
 from django.contrib.postgres.indexes import BrinIndex
 from django.db import models
 from django.utils import timezone
-from pg_timepart.constants import PeriodType
-from pg_timepart.manager import TimeRangePartitioningSupport
+from pg_partitioning.constants import PeriodType
+from pg_partitioning.decorators import ListPartitioning, TimeRangePartitioning
 
 
-@TimeRangePartitioningSupport(
-    partition_key="timestamp", default_period=PeriodType.Month, default_attach_tablespace="data1", default_detach_tablespace="data2"
-)
-class ExampleModel1(models.Model):
+@TimeRangePartitioning(partition_key="timestamp", default_period=PeriodType.Month, default_attach_tablespace="data1", default_detach_tablespace="data2")
+class TimeRangeTableA(models.Model):
     text = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
 
@@ -19,8 +17,8 @@ class ExampleModel1(models.Model):
         ordering = ["text"]
 
 
-@TimeRangePartitioningSupport(partition_key="timestamp", default_period=PeriodType.Day, default_attach_tablespace="data2", default_detach_tablespace="data1")
-class ExampleModel2(models.Model):
+@TimeRangePartitioning(partition_key="timestamp", default_period=PeriodType.Day, default_attach_tablespace="data2", default_detach_tablespace="data1")
+class TimeRangeTableB(models.Model):
     text = models.TextField()
     timestamp = models.DateTimeField(default=timezone.now)
 
@@ -28,3 +26,9 @@ class ExampleModel2(models.Model):
         indexes = [BrinIndex(fields=["timestamp"])]
         unique_together = ("text", "timestamp")
         ordering = ["text"]
+
+
+@ListPartitioning(partition_key="category")
+class ListTable(models.Model):
+    category = models.TextField(default="A", null=True, blank=True)
+    timestamp = models.DateTimeField(default=timezone.now)

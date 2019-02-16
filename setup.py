@@ -11,7 +11,7 @@ with open(rel("README.rst")) as f:
     long_description = f.read()
 
 
-with open(rel("pg_timepart", "__init__.py"), "r") as f:
+with open(rel("pg_partitioning", "__init__.py"), "r") as f:
     version_marker = "__version__ = "
     for line in f:
         if line.startswith(version_marker):
@@ -61,15 +61,15 @@ extra_dependencies["dev"] = extra_dependencies["all"] + [
 
 
 setup(
-    name="django-pg-timepart",
+    name="django-pg-partitioning",
     version=version,
     author="Boyce Li",
     author_email="monobiao@gmail.com",
-    description="A Django extension that implements PostgreSQL tables for partitioning and management based on dates.",
+    description="A Django extension that supports PostgreSQL 11 time ranges and list partitioning.",
     long_description=long_description,
     long_description_content_type="text/x-rst",
-    url="https://github.com/chaitin/django-pg-timepart",
-    packages=["pg_timepart", "pg_timepart.migrations", "pg_timepart.patch"],
+    url="https://github.com/chaitin/django-pg-partitioning",
+    packages=["pg_partitioning", "pg_partitioning.migrations", "pg_partitioning.patch"],
     include_package_data=True,
     install_requires=dependencies,
     extras_require=extra_dependencies,
