@@ -42,7 +42,7 @@ def setup_django_environment():
                 }
             },
             "loggers": {
-                "pg_partitioning.utils": {
+                "pg_partitioning.shortcuts": {
                     "handlers": ["console"],
                     "level": "DEBUG",
                     "propagate": False,
