@@ -6,9 +6,12 @@ If you must use the decorator on a model class that has previously performed a m
 to back up the model's data, then drop the table, and then import the data after you have created a
 partitioned table.
 
-.. py:currentmodule:: pg_timepart.manager
+.. py:currentmodule:: pg_partitioning.decorators
 
-.. autodata:: TimeRangePartitioningSupport
+.. autodata:: TimeRangePartitioning
+   :annotation:
+
+.. autodata:: ListPartitioning
    :annotation:
 
 Post-Decoration

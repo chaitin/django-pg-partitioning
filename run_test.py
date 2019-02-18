@@ -22,7 +22,7 @@ def setup_django_environment():
         USE_TZ=True,
         TIME_ZONE="Asia/Shanghai",
         INSTALLED_APPS=(
-            "pg_timepart",
+            "pg_partitioning",
             "tests",
         ),
         LOGGING={
@@ -42,12 +42,12 @@ def setup_django_environment():
                 }
             },
             "loggers": {
-                "pg_timepart.utils": {
+                "pg_partitioning.utils": {
                     "handlers": ["console"],
                     "level": "DEBUG",
                     "propagate": False,
                 },
-                "pg_timepart.patch.schema": {
+                "pg_partitioning.patch.schema": {
                     "handlers": ["console"],
                     "level": "DEBUG",
                     "propagate": False,
@@ -60,7 +60,7 @@ def setup_django_environment():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the pg_timepart test suite.")
+    parser = argparse.ArgumentParser(description="Run the pg_partitioning test suite.")
     parser.add_argument("-c", "--coverage", dest="use_coverage", action="store_true", help="Run coverage to collect code coverage and generate report.")
     options = parser.parse_args()
 
