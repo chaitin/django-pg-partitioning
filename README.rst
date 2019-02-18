@@ -34,7 +34,7 @@ and manage them. Currently it supports the following two partition types:
 Documentation
   https://django-pg-partitioning.readthedocs.io
 
-.. image:: https://raw.githubusercontent.com/chaitin/django-pg-partitioning/dev/docs/source/_static/carbon.png
+.. image:: https://raw.githubusercontent.com/chaitin/django-pg-partitioning/master/docs/source/_static/carbon.png
    :align: center
 
 TODO
@@ -56,5 +56,5 @@ This project is licensed under the MIT. Please see `LICENSE <https://raw.githubu
 
 Project Practice
 ----------------
-.. image:: https://raw.githubusercontent.com/chaitin/django-pg-timepart/dev/docs/source/_static/safeline.svg?sanitize=true
+.. image:: https://raw.githubusercontent.com/chaitin/django-pg-timepart/master/docs/source/_static/safeline.svg?sanitize=true
    :target: https://www.chaitin.cn/en/safeline
