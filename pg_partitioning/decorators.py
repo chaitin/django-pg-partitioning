@@ -35,7 +35,7 @@ class TimeRangePartitioning(_PartitioningBase):
           from django.db import models
           from django.utils import timezone
 
-          from pg_partitioning.manager import TimeRangePartitioning
+          from pg_partitioning.decorators import TimeRangePartitioning
 
 
           @TimeRangePartitioning(partition_key="timestamp")
@@ -64,7 +64,7 @@ class ListPartitioning(_PartitioningBase):
           from django.db import models
           from django.utils import timezone
 
-          from pg_partitioning.manager import ListPartitioning
+          from pg_partitioning.decorators import ListPartitioning
 
 
           @ListPartitioning(partition_key="category")
