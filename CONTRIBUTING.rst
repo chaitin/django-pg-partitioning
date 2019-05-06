@@ -3,7 +3,7 @@ Contributing Guidelines
 
 Issue tracker
 -------------
-您可以通过 `issue tracker <https://github.com/chaitin/django-pg-timepart/issues>`__ 提交改进建议、缺陷报告或功能需求，但 **必须** 遵守以下规范：
+您可以通过 `issue tracker <https://github.com/chaitin/django-pg-partitioning/issues>`__ 提交改进建议、缺陷报告或功能需求，但 **必须** 遵守以下规范：
 
 * **请勿** 重复提交相似的主题或内容。
 * **请勿** 讨论任何与本项目无关的内容。
@@ -12,7 +12,7 @@ Issue tracker
 
 ----
 
-You can submit improvement suggestions, bug reports, or feature requests through the `issue tracker <https://github.com/chaitin/django-pg-timepart/issue>`_,
+You can submit improvement suggestions, bug reports, or feature requests through the `issue tracker <https://github.com/chaitin/django-pg-partitioning/issues>`_,
 but you **MUST** adhere to the following specifications:
 
 * **Do not** submit similar topics or content repeatedly.

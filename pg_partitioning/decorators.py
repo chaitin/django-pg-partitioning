@@ -75,8 +75,5 @@ class ListPartitioning(_PartitioningBase):
 
     def __call__(self, model: Type[models.Model]):
         super().__call__(model)
-        support_field_types = [item.get_internal_type() for item in [models.TextField(), models.BooleanField(), models.IntegerField()]]
-        if model._meta.get_field(self.partition_key).get_internal_type() not in support_field_types:
-            raise NotImplementedError("The partition_key does not support this field type.")
         model.partitioning = ListPartitionManager(model, self.partition_key, self.options)
         return model

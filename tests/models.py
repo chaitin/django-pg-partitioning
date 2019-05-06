@@ -29,6 +29,18 @@ class TimeRangeTableB(models.Model):
 
 
 @ListPartitioning(partition_key="category")
-class ListTable(models.Model):
+class ListTableText(models.Model):
     category = models.TextField(default="A", null=True, blank=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+
+@ListPartitioning(partition_key="category")
+class ListTableInt(models.Model):
+    category = models.IntegerField(default=0, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+
+@ListPartitioning(partition_key="category")
+class ListTableBool(models.Model):
+    category = models.NullBooleanField(default=False, null=True)
     timestamp = models.DateTimeField(default=timezone.now)

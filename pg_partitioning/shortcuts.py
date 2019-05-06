@@ -23,8 +23,12 @@ def double_quote(name: str) -> str:
     return '"%s"' % name
 
 
-def execute_sql(sql_sequence: Union[str, List[str], Tuple[str]], fetch: bool = False) -> Optional[Tuple]:
+def execute_sql(sql_sequence: Union[str, List[str], Tuple[str]], fetch: bool = False) -> Optional[List]:
     """Execute SQL sequence and returning result."""
+    if not sql_sequence:
+        if fetch:
+            return []
+        return
 
     sql_str = ""
     for statement in sql_sequence if isinstance(sql_sequence, (list, tuple)) else [sql_sequence]:
