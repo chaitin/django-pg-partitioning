@@ -55,8 +55,8 @@ extra_dependencies["dev"] = extra_dependencies["all"] + [
     "twine==1.12.1",
 
     # Testing
-    "tox==3.6.1",
-    "tox-venv"
+    "tox==3.9.0",
+    "tox-venv==0.4.0"
 ]
 
 
