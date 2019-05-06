@@ -2,7 +2,7 @@ django-pg-partitioning
 ======================
 .. image:: https://img.shields.io/badge/License-MIT-orange.svg?style=flat-square
    :target: https://raw.githubusercontent.com/chaitin/django-pg-partitioning/master/LICENSE
-.. image:: https://img.shields.io/badge/Django-2.0_2.1-green.svg?style=flat-square&logo=django
+.. image:: https://img.shields.io/badge/Django-2.x-green.svg?style=flat-square&logo=django
    :target: https://www.djangoproject.com/
 .. image:: https://img.shields.io/badge/PostgreSQL-11-lightgrey.svg?style=flat-square&logo=postgresql
    :target: https://www.postgresql.org/

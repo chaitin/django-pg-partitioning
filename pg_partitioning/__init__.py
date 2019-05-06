@@ -13,6 +13,6 @@ if REQUIRED_DJANGO_VERSION[0] > tuple(django.VERSION[:2]) or tuple(django.VERSIO
     raise ImportError(DJANGO_VERSION_ERROR)
 
 
-__version__ = "0.10.dev2"
+__version__ = "0.11"
 
 default_app_config = "pg_partitioning.apps.AppConfig"
