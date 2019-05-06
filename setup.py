@@ -28,7 +28,7 @@ dependencies = [
 
 extra_dependencies = {
     "django": [
-        "Django>=2.0,<2.2"
+        "Django>=2.0,<3.0"
     ],
 }
 

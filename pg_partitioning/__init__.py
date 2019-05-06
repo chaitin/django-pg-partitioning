@@ -1,7 +1,7 @@
 """
 A Django extension that supports PostgreSQL 11 time ranges and list partitioning.
 """
-REQUIRED_DJANGO_VERSION = [(2, 0), (2, 1)]
+REQUIRED_DJANGO_VERSION = [(2, 0), (3, 0)]
 DJANGO_VERSION_ERROR = "django-pg-partitioning isn't available on the currently installed version of Django."
 
 try:
