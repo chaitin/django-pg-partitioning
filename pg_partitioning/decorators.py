@@ -2,14 +2,16 @@ import logging
 from typing import Type
 
 from django.db import models
+
 from pg_partitioning.manager import ListPartitionManager, TimeRangePartitionManager
 
 logger = logging.getLogger(__name__)
 
 
 class _PartitioningBase:
-    def __init__(self, partition_key: str, **options):
+    def __init__(self, partition_key: str, check_partition_key_type: bool = True, **options):
         self.partition_key = partition_key
+        self.check_partition_key_type = check_partition_key_type
         self.options = options
 
     def __call__(self, model: Type[models.Model]):
@@ -22,6 +24,7 @@ class TimeRangePartitioning(_PartitioningBase):
 
     Parameters:
       partition_key(str): Partition field name of DateTimeField.
+      check_partition_key_type(bool): Check Partition field validity.
       options: Currently supports the following keyword parameters:
 
         - default_period(PeriodType): Default partition period.
@@ -46,7 +49,8 @@ class TimeRangePartitioning(_PartitioningBase):
 
     def __call__(self, model: Type[models.Model]):
         super().__call__(model)
-        if model._meta.get_field(self.partition_key).get_internal_type() != models.DateTimeField().get_internal_type():
+        if self.check_partition_key_type and \
+                model._meta.get_field(self.partition_key).get_internal_type() != models.DateTimeField().get_internal_type():
             raise ValueError("The partition_key must be DateTimeField type.")
         model.partitioning = TimeRangePartitionManager(model, self.partition_key, self.options)
         return model
@@ -57,6 +61,7 @@ class ListPartitioning(_PartitioningBase):
 
     Parameters:
       partition_key(str): Partition key name, the type of the key must be one of boolean, text or integer.
+      check_partition_key_type(bool): Check Partition field validity.
 
     Example:
       .. code-block:: python
@@ -75,8 +80,9 @@ class ListPartitioning(_PartitioningBase):
 
     def __call__(self, model: Type[models.Model]):
         super().__call__(model)
-#       support_field_types = [item.get_internal_type() for item in [models.TextField(), models.BooleanField(), models.IntegerField()]]
-#       if model._meta.get_field(self.partition_key).get_internal_type() not in support_field_types:
-#          raise NotImplementedError("The partition_key does not support this field type.")
+        if self.check_partition_key_type:
+            support_field_types = [item.get_internal_type() for item in [models.TextField(), models.BooleanField(), models.IntegerField()]]
+            if model._meta.get_field(self.partition_key).get_internal_type() not in support_field_types:
+                raise NotImplementedError("The partition_key does not support this field type.")
         model.partitioning = ListPartitionManager(model, self.partition_key, self.options)
         return model
