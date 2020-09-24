@@ -7,7 +7,7 @@ def rel(*xs):
     return os.path.join(os.path.abspath(os.path.dirname(__file__)), *xs)
 
 
-with open(rel("README.rst")) as f:
+with open(rel("README.rst"), encoding="utf8", errors='ignore') as f:
     long_description = f.read()
 
 
