@@ -9,9 +9,8 @@ logger = logging.getLogger(__name__)
 
 
 class _PartitioningBase:
-    def __init__(self, partition_key: str, check_partition_key_type: bool = True, **options):
+    def __init__(self, partition_key: str, **options):
         self.partition_key = partition_key
-        self.check_partition_key_type = check_partition_key_type
         self.options = options
 
     def __call__(self, model: Type[models.Model]):
@@ -24,7 +23,6 @@ class TimeRangePartitioning(_PartitioningBase):
 
     Parameters:
       partition_key(str): Partition field name of DateTimeField.
-      check_partition_key_type(bool): Check Partition field validity.
       options: Currently supports the following keyword parameters:
 
         - default_period(PeriodType): Default partition period.
@@ -49,8 +47,7 @@ class TimeRangePartitioning(_PartitioningBase):
 
     def __call__(self, model: Type[models.Model]):
         super().__call__(model)
-        if self.check_partition_key_type and \
-                model._meta.get_field(self.partition_key).get_internal_type() != models.DateTimeField().get_internal_type():
+        if model._meta.get_field(self.partition_key).get_internal_type() != models.DateTimeField().get_internal_type():
             raise ValueError("The partition_key must be DateTimeField type.")
         model.partitioning = TimeRangePartitionManager(model, self.partition_key, self.options)
         return model
@@ -61,7 +58,7 @@ class ListPartitioning(_PartitioningBase):
 
     Parameters:
       partition_key(str): Partition key name, the type of the key must be one of boolean, text or integer.
-      check_partition_key_type(bool): Check Partition field validity. For example if you want partitioning by ForeignKey.
+      check_partition_key_type(bool): Check Partition field validity, for example if you want partitioning by ForeignKey.
 
     Example:
       .. code-block:: python
@@ -77,6 +74,10 @@ class ListPartitioning(_PartitioningBase):
               category = models.TextField(default="A")
               timestamp = models.DateTimeField(default=timezone.now, primary_key=True)
     """
+
+    def __init__(self, partition_key: str, check_partition_key_type: bool = True, **options):
+        super().__init__(partition_key, **options)
+        self.check_partition_key_type = check_partition_key_type
 
     def __call__(self, model: Type[models.Model]):
         super().__call__(model)
