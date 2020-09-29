@@ -61,7 +61,7 @@ class ListPartitioning(_PartitioningBase):
 
     Parameters:
       partition_key(str): Partition key name, the type of the key must be one of boolean, text or integer.
-      check_partition_key_type(bool): Check Partition field validity.
+      check_partition_key_type(bool): Check Partition field validity. For example if you want partitioning by ForeignKey.
 
     Example:
       .. code-block:: python
