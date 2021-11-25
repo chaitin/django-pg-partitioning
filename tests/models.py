@@ -1,6 +1,7 @@
 from django.contrib.postgres.indexes import BrinIndex
 from django.db import models
 from django.utils import timezone
+
 from pg_partitioning.constants import PeriodType
 from pg_partitioning.decorators import ListPartitioning, TimeRangePartitioning
 

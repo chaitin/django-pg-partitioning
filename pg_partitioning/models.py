@@ -1,5 +1,6 @@
 from django.apps import apps
 from django.db import models, transaction
+
 from pg_partitioning.signals import post_attach_partition, post_create_partition, post_detach_partition
 
 from .constants import (
@@ -75,15 +76,12 @@ class PartitionLog(models.Model):
 
         model = apps.get_model(self.config.model_label)
         if self._state.adding:
-            create_partition_sql = (
-                SQL_CREATE_TIME_RANGE_PARTITION
-                % {
-                    "parent": double_quote(model._meta.db_table),
-                    "child": double_quote(self.table_name),
-                    "date_start": single_quote(self.start.isoformat()),
-                    "date_end": single_quote(self.end.isoformat()),
-                }
-            )
+            create_partition_sql = SQL_CREATE_TIME_RANGE_PARTITION % {
+                "parent": double_quote(model._meta.db_table),
+                "child": double_quote(self.table_name),
+                "date_start": single_quote(self.start.isoformat()),
+                "date_end": single_quote(self.end.isoformat()),
+            }
 
             if self.config.attach_tablespace:
                 create_partition_sql += SQL_APPEND_TABLESPACE % {"tablespace": self.config.attach_tablespace}

@@ -1,16 +1,17 @@
 import datetime
 from unittest.mock import patch
 
-from dateutil.relativedelta import relativedelta, MO
+from dateutil.relativedelta import MO, relativedelta
 from django.db import connection
 from django.test import TestCase
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-from pg_partitioning.constants import PeriodType, SQL_GET_TABLE_INDEXES
+
+from pg_partitioning.constants import SQL_GET_TABLE_INDEXES, PeriodType
 from pg_partitioning.models import PartitionConfig, PartitionLog
 from pg_partitioning.shortcuts import single_quote
 
-from .models import ListTableText, TimeRangeTableA, TimeRangeTableB, ListTableInt, ListTableBool
+from .models import ListTableBool, ListTableInt, ListTableText, TimeRangeTableA, TimeRangeTableB
 
 
 def t(year=2018, month=8, day=25, hour=7, minute=15, second=15, millisecond=0):
@@ -49,7 +50,7 @@ class TimeRangePartitioningTestCase(GeneralTestCase):
 
         for i in range(0, 3):
             if i == 0:
-                _ = TimeRangeTableB.partitioning.config  # Create first partition by side effect.
+                TimeRangeTableB.partitioning.config  # Create first partition by side effect.
             else:
                 TimeRangeTableB.partitioning.create_partition(0)
             end_date = start_date + delta

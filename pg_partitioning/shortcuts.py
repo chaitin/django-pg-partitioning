@@ -2,6 +2,7 @@ import logging
 from typing import List, Optional, Tuple, Union
 
 from django.db import connection
+
 from pg_partitioning.constants import SQL_DROP_TABLE, SQL_GET_TABLE_INDEXES, SQL_SET_INDEX_TABLESPACE, SQL_SET_TABLE_TABLESPACE, SQL_TRUNCATE_TABLE
 
 logger = logging.getLogger(__name__)

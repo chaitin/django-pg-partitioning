@@ -2,6 +2,7 @@ import logging
 from typing import Type
 
 from django.db import models
+
 from pg_partitioning.manager import ListPartitionManager, TimeRangePartitionManager
 
 logger = logging.getLogger(__name__)
