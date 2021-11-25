@@ -1,6 +1,7 @@
 from django.contrib.postgres.indexes import BrinIndex
 from django.db import models
 from django.utils import timezone
+
 from pg_partitioning.constants import PeriodType
 from pg_partitioning.decorators import ListPartitioning, TimeRangePartitioning
 
@@ -29,6 +30,18 @@ class TimeRangeTableB(models.Model):
 
 
 @ListPartitioning(partition_key="category")
-class ListTable(models.Model):
+class ListTableText(models.Model):
     category = models.TextField(default="A", null=True, blank=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+
+@ListPartitioning(partition_key="category")
+class ListTableInt(models.Model):
+    category = models.IntegerField(default=0, null=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+
+@ListPartitioning(partition_key="category")
+class ListTableBool(models.Model):
+    category = models.NullBooleanField(default=False, null=True)
     timestamp = models.DateTimeField(default=timezone.now)

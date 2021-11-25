@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db import IntegrityError, models
 from django.db.models import Q
 from django.utils import timezone
+
 from pg_partitioning.shortcuts import double_quote, execute_sql, generate_set_indexes_tablespace_sql, single_quote
 
 from .constants import (
@@ -197,13 +198,15 @@ class ListPartitionManager(_PartitionManagerBase):
           tablespace(str): Partition tablespace name.
         """
 
-        sql_sequence = [
-            SQL_CREATE_LIST_PARTITION % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name), "value": _db_value(value)}
-        ]
+        create_partition_sql = SQL_CREATE_LIST_PARTITION % {
+            "parent": double_quote(self.model._meta.db_table),
+            "child": double_quote(partition_name),
+            "value": _db_value(value),
+        }
         if tablespace:
-            sql_sequence[0] += SQL_APPEND_TABLESPACE % {"tablespace": tablespace}
-            sql_sequence.extend(generate_set_indexes_tablespace_sql(partition_name, tablespace))
-        execute_sql(sql_sequence)
+            create_partition_sql += SQL_APPEND_TABLESPACE % {"tablespace": tablespace}
+        execute_sql(create_partition_sql)
+        execute_sql(generate_set_indexes_tablespace_sql(partition_name, tablespace))
 
     def attach_partition(self, partition_name: str, value: Union[str, int, bool, None], tablespace: str = None) -> None:
         """Attach partitions.
@@ -219,8 +222,7 @@ class ListPartitionManager(_PartitionManagerBase):
             sql_sequence.append(SQL_SET_TABLE_TABLESPACE % {"name": double_quote(partition_name), "tablespace": tablespace})
             sql_sequence.extend(generate_set_indexes_tablespace_sql(partition_name, tablespace))
         sql_sequence.append(
-            SQL_ATTACH_LIST_PARTITION
-            % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name), "value": single_quote(_db_value(value))}
+            SQL_ATTACH_LIST_PARTITION % {"parent": double_quote(self.model._meta.db_table), "child": double_quote(partition_name), "value": _db_value(value)}
         )
         execute_sql(sql_sequence)
 
